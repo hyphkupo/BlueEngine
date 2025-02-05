@@ -5,7 +5,14 @@
       <FullPath>C:\Workspace\OtherProjects\BlueEngine\Binx64DebugEngine\Engine.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
-  <ContentFiles />
+  <ContentFiles>
+    <ContentFile>
+      <FullPath>C:\Workspace\OtherProjects\BlueEngine\Binx64DebugEngine\PixelShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Workspace\OtherProjects\BlueEngine\Binx64DebugEngine\VertexShader.cso</FullPath>
+    </ContentFile>
+  </ContentFiles>
   <SatelliteDlls />
   <NonRecipeFileRefs />
 </Project>
