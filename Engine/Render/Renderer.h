@@ -41,7 +41,6 @@ namespace Blue
 
 		// 인덱스 버퍼 (정점을 조립할 때 정점의 순서를 전달).
 		
-
 		// 쉐이더 객체.
 		//std::unique_ptr<class Shader> shader;
 

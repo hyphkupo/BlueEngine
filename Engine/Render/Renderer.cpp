@@ -314,7 +314,6 @@ namespace Blue
 
 		// ¹öÆÛ.
 		renderTargetView->Release();
-
 	}
 	
 	void Renderer::Draw()
