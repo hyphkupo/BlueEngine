@@ -4,6 +4,7 @@
 #include <string>
 #include <Windows.h>
 #include "Type.h"
+#include <d3d11.h>
 
 namespace Blue
 {
@@ -29,6 +30,10 @@ namespace Blue
 
 		// 싱글톤 접근 함수.
 		static Engine& Get();
+
+		// Getter.
+		ID3D11Device& Device() const;	// ~const: 참조로 반환 (포인터이므로 참조 반환)
+		ID3D11DeviceContext& Context() const;
 
 	protected:
 		// 창 객체.

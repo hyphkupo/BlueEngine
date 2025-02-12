@@ -61,7 +61,7 @@ namespace Blue
 		// 메시지 처리.
 		switch (message)
 		{
-			// 창이 삭제되면 실행됨.
+		// 창이 삭제되면 실행됨.
 		case WM_DESTROY:
 			// 이때 프로그램 종료 메시지를 발행.
 			PostQuitMessage(0);
@@ -75,5 +75,15 @@ namespace Blue
 	Engine& Engine::Get()
 	{
 		return *instance;		// 참조로 넘어감
+	}
+
+	ID3D11Device& Engine::Device() const
+	{
+		return *renderer->device;
+	}
+
+	ID3D11DeviceContext& Engine::Context() const
+	{
+		return *renderer->context;
 	}
 }
