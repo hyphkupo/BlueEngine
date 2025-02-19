@@ -1,6 +1,6 @@
 #include "Shader.h"
 #include <d3dcompiler.h>
-#include "../Core/Engine.h"
+#include "Core/Engine.h"
 
 namespace Blue
 {
@@ -9,8 +9,10 @@ namespace Blue
 	{
 		// 경로 추가.
 		wchar_t path[256] = { };
-		swprintf_s(path, 256, L"HLSLShader/%sVertexShader.hlsl", name.c_str());		// %s: name
+		//swprintf_s(path, 256, L"HLSLShader/%sVertexShader.hlsl", name.c_str());
+		swprintf_s(path, 256, L"../CompiledShader/%sVertexShader.cso", name.c_str());		// %s: name
 
+		/*
 		// 정점 쉐이더 컴파일(해석).
 		//ID3DBlob* vertexShaderBuffer = nullptr;		// 쉐이더 정보 저장용
 		auto result = D3DCompileFromFile(
@@ -35,13 +37,28 @@ namespace Blue
 
 			__debugbreak();
 		}
+		*/
 
 		// 장치 객체 얻어오기.
 		ID3D11Device& device = Engine::Get().Device();
 
+		// CSO 로드. (컴파일 x)
+		auto result = D3DReadFileToBlob(path, &vertexShaderBuffer);
+		if (FAILED(result))
+		{
+			MessageBoxA(
+				nullptr,
+				"Failed to read vertex shader object.",
+				"Error",
+				MB_OK
+			);
+
+			__debugbreak();
+		}
+
 		// 정점 쉐이더 생성.
 		result = device.CreateVertexShader(
-			vertexShaderBuffer->GetBufferPointer(),
+			vertexShaderBuffer->GetBufferPointer(),		// 버퍼에 .CSO 파일 들어 있음 (바이너리 파일 바로 전 단계)
 			vertexShaderBuffer->GetBufferSize(),
 			nullptr,
 			&vertexShader
@@ -74,7 +91,8 @@ namespace Blue
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,	// float: 32bit (4차원 벡터는 뒤에 a도 붙음)
 			  D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+			{ "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },		// UV만 넘기므로 RG만 / POSITION에서 4*3바이트 + COLOR에서 4*3바이트 썼으므로 24(바이트)
 		};
 
 		result = device.CreateInputLayout(
@@ -101,7 +119,25 @@ namespace Blue
 		// 각 리소스 바인딩. - x?
 		// 픽셀 쉐이더 컴파일.
 		//ID3DBlob* pixelShaderBuffer = nullptr;
-		swprintf_s(path, 256, L"HLSLShader/%sPixelShader.hlsl", name.c_str());		// %s: name
+		//swprintf_s(path, 256, L"HLSLShader/%sPixelShader.hlsl", name.c_str());		// %s: name
+		
+		// CSO 로드.
+		swprintf_s(path, 256, L"../CompiledShader/%sPixelShader.cso", name.c_str());		// %s: name
+
+		result = D3DReadFileToBlob(path, &pixelShaderBuffer);
+		if (FAILED(result))
+		{
+			MessageBoxA(
+				nullptr,
+				"Failed to read pixel shader object.",
+				"Error",
+				MB_OK
+			);
+
+			__debugbreak();
+		}
+
+		/*
 		result = D3DCompileFromFile(
 			path,
 			nullptr,
@@ -123,6 +159,7 @@ namespace Blue
 
 			__debugbreak();
 		}
+		*/
 
 		// 픽셀 쉐이더 생성.
 		result = device.CreatePixelShader(

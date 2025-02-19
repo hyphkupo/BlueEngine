@@ -21,9 +21,13 @@ using namespace Blue;
 //    return 0;
 //}
 
+#include "Render/Texture.h"
 
 int main()
 {
+	// @Test: 텍스처 파일 로드 테스트.
+	//Texture texture("T_coord.png");
+
 	Engine engine(1280, 800, TEXT("Engine Demo"), GetModuleHandle(nullptr));
 	engine.Run();
 

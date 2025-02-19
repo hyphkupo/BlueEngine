@@ -98,7 +98,7 @@ namespace Blue
 
 		// 정점/인덱스 버퍼 바인딩.
 		static uint32 offset = 0;
-		context.IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
+		context.IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);	// IA단계 (v.s 전 정점 조립 단계)
 		context.IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	}
 

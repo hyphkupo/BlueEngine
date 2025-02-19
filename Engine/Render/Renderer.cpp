@@ -320,16 +320,16 @@ namespace Blue
 	{
 		if (mesh == nullptr)
 		{
-			mesh = std::make_unique<TriangleMesh>();
+			mesh = std::make_unique<QuadMesh>();
 		}
 
 		// 그리기 전 작업 (BeginScene).
-		// 지우기(Clear).
+		// 지우기(Clear).		지우는 작업은 사실 없음 ... 색상 하나로 덮는 것
 		float color[] = { 0.6f, 0.7f, 0.8f, 1.0f };
 		context->ClearRenderTargetView(renderTargetView, color);	// 우리가 이미지로 사용하는 건 enderTargetView.
 		// 메모리를 값(색) 하나로 덮음
 
-		// 드로우(Draw) (Draw).
+		// 드로우(Draw) (Draw).		드로우 콜 시 렌더링 파이프라인
 		mesh->Draw();
 
 		/*
