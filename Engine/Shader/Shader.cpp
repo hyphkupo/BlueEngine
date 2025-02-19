@@ -123,7 +123,7 @@ namespace Blue
 		
 		// CSO ·Îµå.
 		swprintf_s(path, 256, L"../CompiledShader/%sPixelShader.cso", name.c_str());		// %s: name
-
+		
 		result = D3DReadFileToBlob(path, &pixelShaderBuffer);
 		if (FAILED(result))
 		{
