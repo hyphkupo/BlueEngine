@@ -346,6 +346,9 @@ namespace Blue
 		context->ClearRenderTargetView(renderTargetView, color);	// 우리가 이미지로 사용하는 건 enderTargetView.
 		// 메모리를 값(색) 하나로 덮음
 
+		// @Test.
+		mesh->Update(1.0f / 60.0f);
+
 		// 드로우(Draw) (Draw).		드로우 콜 시 렌더링 파이프라인
 		mesh->Draw();
 
