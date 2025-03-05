@@ -6,6 +6,7 @@
 //#include "../Shader/Shader.h"
 #include "TriangleMesh.h"
 #include "QuadMesh.h"
+#include "Core/Common.h"
 
 namespace Blue
 {
@@ -39,18 +40,18 @@ namespace Blue
 		swapChainDesc.Windowed = true;		// 창 모드?.
 		swapChainDesc.OutputWindow = window;
 		swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-		swapChainDesc.BufferCount = 1;		// 백버퍼 개수.	=> 일반적으론 개수가 늘어날수록 창 바꿀 때 부드러움
+		swapChainDesc.BufferCount = 2;		// 백버퍼 개수.	=> 일반적으론 개수가 늘어날수록 창 바꿀 때 부드러움
 		swapChainDesc.SampleDesc.Count = 1;	// 멀티 샘플링 개수. (멀티 샘플링 개수 1개 => 멀티 샘플링을 안 하겠다, 안 쓰겠다는 뜻)
 		swapChainDesc.SampleDesc.Quality = 0;	// 멀티 샘플링 수준. (샘플링 값은 보통 count - 1)
 		swapChainDesc.BufferDesc.Width = width;
 		swapChainDesc.BufferDesc.Height = height;
 		swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;		// 8bit 4개이므로 32bit, unsigned(부호없음), normalize(정규화됨 => 0~1까지의 값으로 매핑시키겠다)
-		swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+		swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 
 		// D3D_FEATURE_LEVEL targetLevel;
 
 		// 장치 생성.
-		HRESULT result = D3D11CreateDeviceAndSwapChain(
+		ThrowIfFailed(D3D11CreateDeviceAndSwapChain(
 			nullptr,
 			D3D_DRIVER_TYPE_HARDWARE,
 			nullptr,
@@ -64,14 +65,28 @@ namespace Blue
 			nullptr,	// nullptr 대신 D3D_FEATURE_LEVEL 변수 만들어서 넣으면 버전 맞는지 확인...?
 			&context	// 바인딩 (GPU로 넘김) => 연결, DRAW
 			// dx는 보통 set이라는 이름을 가짐 (설정, 연결, 바인딩)
-		);
+		), TEXT("Failed to create devices"));
+
+		//ThrowIfFailed(D3D11CreateDevice(
+		//	nullptr,
+		//	D3D_DRIVER_TYPE_HARDWARE,
+		//	nullptr,
+		//	flag,
+		//	featureLevels,
+		//	_countof(featureLevels),
+		//	/*D3D11_SDK_VERSION*/ 1,
+		//	&device,
+		//	nullptr,
+		//	&context
+		//), TEXT("Failed to create device");
+		
 
 		// 결과 확인.
-		if (FAILED(result))		// result < 0과 같음
-		{
-			MessageBoxA(nullptr, "Failed to create devices.", "Error", MB_OK);		// ~A: 아스키 버전
-			__debugbreak();
-		}
+		//if (FAILED(result))		// result < 0과 같음
+		//{
+		//	MessageBoxA(nullptr, "Failed to create devices.", "Error", MB_OK);		// ~A: 아스키 버전
+		//	__debugbreak();
+		//}
 
 		// 렌더 타겟 뷰 생성.		// 뷰 => 리소스 => 리소스는 덩어리 (포인터 생각!)
 		ID3D11Texture2D* backbuffer = nullptr;
@@ -80,7 +95,7 @@ namespace Blue
 		//	__uuidof(backbuffer), 
 		//	reinterpret_cast<void**>(&backbuffer)
 		//);
-		result = swapChain->GetBuffer(0, IID_PPV_ARGS(&backbuffer));
+		auto result = swapChain->GetBuffer(0, IID_PPV_ARGS(&backbuffer));
 		if (FAILED(result))
 		{
 			MessageBoxA(nullptr, "Failed to get back buffer.", "Error", MB_OK);		// ~A: 아스키 버전
@@ -324,7 +339,9 @@ namespace Blue
 		}
 
 		// 그리기 전 작업 (BeginScene).
-		// 지우기(Clear).		지우는 작업은 사실 없음 ... 색상 하나로 덮는 것
+		context->OMSetRenderTargets(1, &renderTargetView, nullptr);
+
+		// 지우기(Clear).			지우는 작업은 사실 없음 ... 색상 하나로 덮는 것
 		float color[] = { 0.6f, 0.7f, 0.8f, 1.0f };
 		context->ClearRenderTargetView(renderTargetView, color);	// 우리가 이미지로 사용하는 건 enderTargetView.
 		// 메모리를 값(색) 하나로 덮음

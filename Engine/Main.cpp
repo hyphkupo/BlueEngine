@@ -23,14 +23,33 @@ using namespace Blue;
 
 #include "Render/Texture.h"
 
+#include "Core/Common.h"
+#include <typeinfo>
+#include "Shader/Shader.h"
+#include "Shader/TextureMappingShader.h"
+
+template<typename T, typename std::enable_if<std::is_base_of<Shader, T>::value>::type* = nullptr>
+void TestClass()
+{
+	std::boolalpha(std::cout);
+	std::cout << typeid(T).name() << "\n";
+	std::cout << std::is_base_of<Shader, T>::value << "\n";
+}
+
 int main()
 {
 	// @Test: 텍스처 파일 로드 테스트.
 	//Texture texture("T_coord.png");
+	
+	//TestClass<Engine>();		=> 타입을 잘못 지정하면 없다고 나온다
+
+	//ThrowIfFailed(E_FAIL, TEXT("Test Error"));
 
 	Engine engine(1280, 800, TEXT("Engine Demo"), GetModuleHandle(nullptr));
 	engine.Run();
 
+
+	/*
 	// Vector2 테스트.
 	//Vector2 v1(1.0f, 2.0f);
 	//Vector2 v2(2.0f, 4.0f);
@@ -39,4 +58,5 @@ int main()
 	//Vector2 v4 = 2.0f * v1;
 	//
 	//std::wcout << v3.ToString() << " | " << (-v4).ToString() << "\n";
+	*/
 }

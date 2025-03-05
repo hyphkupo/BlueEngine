@@ -114,8 +114,15 @@ namespace Blue
 		// 루프 순회하면서 바인딩 & 드로우.
 		for (int ix = 0; ix < (int32)meshes.size(); ++ix)
 		{
+			//auto shader = shaders[ix].lock();
+			//if (!shader)
+			//{
+			//	continue;
+			//	//shader->Bind();
+			//}
+
 			meshes[ix]->Bind();
-			shaders[ix]->Bind();
+			shaders[ix].lock()->Bind();
 			context.DrawIndexed(meshes[ix]->IndexCount(), 0, 0);
 		}
 	}

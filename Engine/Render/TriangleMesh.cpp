@@ -1,6 +1,7 @@
 #include "TriangleMesh.h"
 #include "Vertex.h"
-#include "../Shader/Shader.h"
+#include "Shader/DefaultShader.h"
+#include "Resource/ShaderLoader.h"
 
 namespace Blue
 {
@@ -18,6 +19,9 @@ namespace Blue
 		std::vector<uint32> indices = { 0, 1, 2 };	// 이 순서대로 그림
 		
 		meshes.emplace_back(std::make_shared<MeshData>(vertices, indices));	// 모델링 / 서브메쉬가 여러개면 이 코드 여러번 사용
-		shaders.emplace_back(std::make_shared<Shader>());	// 머티리얼(Shader)
+		//shaders.emplace_back(std::make_shared<Shader>());	// 머티리얼(Shader)
+		std::weak_ptr<DefaultShader> shader;
+		ShaderLoader::Get().Load<DefaultShader>(shader);
+		shaders.emplace_back(shader);
 	}
 }
