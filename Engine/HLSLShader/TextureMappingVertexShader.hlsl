@@ -22,7 +22,7 @@ VertexOutput main(VertexInput input)    // 정점 셰이더 출력값은 픽셀 셰이더 입력
 {                                       // 픽셀 단위에서 위치는 잘 다루지 않음
     VertexOutput output;
     //output.position = float4(input.position, 1); // 점이므로 마지막을 1로 채움
-    output.position = mul(float4(input.position, 1), worldMatrix);
+    output.position = mul(float4(input.position, 1), worldMatrix);  // 행렬 곱
     output.color = input.color;
     output.texCoord = input.texCoord;   // 입력 받은 걸 그대로 출력에 덮어 씌워줌
     

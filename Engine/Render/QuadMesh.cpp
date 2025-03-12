@@ -29,10 +29,10 @@ namespace Blue
 		//vertices[2].position = vertices[2].position * Matrix4::Scale(0.5f);
 		//vertices[3].position = vertices[3].position * Matrix4::Scale(0.5f);
 
-		//vertices[0].position = vertices[0].position * Matrix4::Translation(0.5f, 0.0f, 0.0f);
-		//vertices[1].position = vertices[1].position * Matrix4::Translation(0.5f, 0.0f, 0.0f);
-		//vertices[2].position = vertices[2].position * Matrix4::Translation(0.5f, 0.0f, 0.0f);
-		//vertices[3].position = vertices[3].position * Matrix4::Translation(0.5f, 0.0f, 0.0f);
+		vertices[0].position = vertices[0].position * Matrix4::Translation(0.5f, 0.0f, 0.0f);
+		vertices[1].position = vertices[1].position * Matrix4::Translation(0.5f, 0.0f, 0.0f);
+		vertices[2].position = vertices[2].position * Matrix4::Translation(0.5f, 0.0f, 0.0f);
+		vertices[3].position = vertices[3].position * Matrix4::Translation(0.5f, 0.0f, 0.0f);
 
 		meshes.emplace_back(std::make_shared<MeshData>(vertices, indices));
 		//shaders.emplace_back(std::make_shared<TextureMappingShader>("T_coord.png"));
@@ -46,8 +46,12 @@ namespace Blue
 	void QuadMesh::Update(float deltaTime)
 	{
 		// 회전 처리.
-		static float angle = 0.0f;
-		angle += 60.0f * deltaTime;		// 초당 60도 회전
+		//static float angle = 0.0f;
+		//angle += 90.0f * deltaTime;		// 초당 60도 회전
+
+		// 회전 적용.
+		//transform.rotation.z = -angle;
+		//transform.position.x = angle;
 
 		//Rotate(angle);
 	}

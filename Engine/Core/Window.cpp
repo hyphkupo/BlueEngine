@@ -62,7 +62,7 @@ namespace Blue
             windowWidth, windowHeight,
             nullptr,       // Parent window    
             nullptr,       // Menu
-            instance,  // Instance handle
+            instance,// Instance handle
             nullptr        // Additional application data
         );
 

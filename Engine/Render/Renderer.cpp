@@ -25,6 +25,22 @@ namespace Blue
 			D3D_FEATURE_LEVEL_11_0,
 		};
 
+		D3D_FEATURE_LEVEL outFeatureLevel;
+
+		// 장치 생성.
+		//D3D11CreateDevice(
+		//	nullptr,
+		//	D3D_DRIVER_TYPE_HARDWARE,
+		//	nullptr,
+		//	flag,
+		//	featureLevels,
+		//	_countof(featureLevels),
+		//	D3D11_SDK_VERSION,
+		//	&device,
+		//	&outFeatureLevel,
+		//	&context
+		//);
+
 		//스왑 체인 정보 구조체.
 		//DXGI_MODE_DESC BufferDesc;
 		//DXGI_SAMPLE_DESC SampleDesc;
@@ -51,7 +67,24 @@ namespace Blue
 		// D3D_FEATURE_LEVEL targetLevel;
 
 		// 장치 생성.
-		ThrowIfFailed(D3D11CreateDeviceAndSwapChain(
+		//ThrowIfFailed(D3D11CreateDeviceAndSwapChain(
+		//	nullptr,
+		//	D3D_DRIVER_TYPE_HARDWARE,
+		//	nullptr,
+		//	flag,
+		//	featureLevels,
+		//	_countof(featureLevels),	// 배열의 개수
+		//	D3D11_SDK_VERSION,
+		//	&swapChainDesc,
+		//	&swapChain,	// 버퍼 교환
+		//	&device,	// 리소스 생성 (CPU)
+		//	nullptr,	// nullptr 대신 D3D_FEATURE_LEVEL 변수 만들어서 넣으면 버전 맞는지 확인...?
+		//	&context	// 바인딩 (GPU로 넘김) => 연결, DRAW
+		//	// dx는 보통 set이라는 이름을 가짐 (설정, 연결, 바인딩)
+		//), TEXT("Failed to create devices."));
+
+		// 장치 생성.
+		ThrowIfFailed(D3D11CreateDevice(
 			nullptr,
 			D3D_DRIVER_TYPE_HARDWARE,
 			nullptr,
@@ -59,13 +92,16 @@ namespace Blue
 			featureLevels,
 			_countof(featureLevels),	// 배열의 개수
 			D3D11_SDK_VERSION,
-			&swapChainDesc,
-			&swapChain,	// 버퍼 교환
-			&device,	// 리소스 생성 (CPU)
-			nullptr,	// nullptr 대신 D3D_FEATURE_LEVEL 변수 만들어서 넣으면 버전 맞는지 확인...?
-			&context	// 바인딩 (GPU로 넘김) => 연결, DRAW
-			// dx는 보통 set이라는 이름을 가짐 (설정, 연결, 바인딩)
-		), TEXT("Failed to create devices"));
+			&device,
+			nullptr,
+			&context
+		), TEXT("Failed to create devices."));
+
+		// IDXGIFactory 리소스 생성.
+		IDXGIFactory* factory = nullptr;
+		//CreateDXGIFactory(__uuidof(factory), reinterpret_cast<void**>(&factory));
+		ThrowIfFailed(CreateDXGIFactory(IID_PPV_ARGS(&factory)),
+			TEXT("Failed to create dxgifactory."));
 
 		//ThrowIfFailed(D3D11CreateDevice(
 		//	nullptr,
@@ -80,13 +116,19 @@ namespace Blue
 		//	&context
 		//), TEXT("Failed to create device");
 		
-
 		// 결과 확인.
 		//if (FAILED(result))		// result < 0과 같음
 		//{
 		//	MessageBoxA(nullptr, "Failed to create devices.", "Error", MB_OK);		// ~A: 아스키 버전
 		//	__debugbreak();
 		//}
+
+		// SwapChain 생성.
+		ThrowIfFailed(factory->CreateSwapChain(
+			device,
+			&swapChainDesc,
+			&swapChain
+		), TEXT("Failed to create a swap chain."));
 
 		// 렌더 타겟 뷰 생성.		// 뷰 => 리소스 => 리소스는 덩어리 (포인터 생각!)
 		ID3D11Texture2D* backbuffer = nullptr;
@@ -95,19 +137,15 @@ namespace Blue
 		//	__uuidof(backbuffer), 
 		//	reinterpret_cast<void**>(&backbuffer)
 		//);
-		auto result = swapChain->GetBuffer(0, IID_PPV_ARGS(&backbuffer));
-		if (FAILED(result))
-		{
-			MessageBoxA(nullptr, "Failed to get back buffer.", "Error", MB_OK);		// ~A: 아스키 버전
-			__debugbreak();
-		}
 
-		result = device->CreateRenderTargetView(backbuffer, nullptr, &renderTargetView);
-		if (FAILED(result))
-		{
-			MessageBoxA(nullptr, "Failed to create render targer view.", "Error", MB_OK);		// ~A: 아스키 버전
-			__debugbreak();
-		}
+		ThrowIfFailed(swapChain->GetBuffer(
+			0, 
+			IID_PPV_ARGS(&backbuffer)
+		), TEXT("Failed to get back buffer"));
+
+		ThrowIfFailed(device->CreateRenderTargetView(
+			backbuffer, nullptr, &renderTargetView
+		), TEXT("Failed to create render target views"));
 
 		// 렌더 타겟 뷰 바인딩(연결).
 		context->OMSetRenderTargets(1, &renderTargetView, nullptr);		// OutputMerger (=> 최종 출력 단계에 사용할 함수다) => render target 넘김
@@ -336,6 +374,22 @@ namespace Blue
 		if (mesh == nullptr)
 		{
 			mesh = std::make_unique<QuadMesh>();
+			mesh->transform.scale = Vector3::One * 0.5f;
+			mesh->transform.position.x = 0.5f;
+		}
+
+		if (mesh2 == nullptr)
+		{
+			mesh2 = std::make_unique<QuadMesh>();
+			mesh2->transform.scale = Vector3::One * 0.5f;
+			mesh2->transform.position.x = -0.5f;
+		}
+
+		if (mesh3 == nullptr)
+		{		
+			mesh3 = std::make_unique<TriangleMesh>();
+			mesh3->transform.scale = Vector3::One * 0.5f;
+			mesh3->transform.position.y = 0.5f;
 		}
 
 		// 그리기 전 작업 (BeginScene).
@@ -348,9 +402,12 @@ namespace Blue
 
 		// @Test.
 		mesh->Update(1.0f / 60.0f);
+		mesh2->Update(1.0f / 60.0f);
 
 		// 드로우(Draw) (Draw).		드로우 콜 시 렌더링 파이프라인
 		mesh->Draw();
+		mesh2->Draw();
+		mesh3->Draw();
 
 		/*
 		// 리소스 바인딩.

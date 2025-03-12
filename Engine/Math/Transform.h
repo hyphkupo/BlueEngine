@@ -27,6 +27,5 @@ namespace Blue
 		
 		// 상수 버퍼.
 		ID3D11Buffer* constantBuffer = nullptr;
-
 	};
 }
