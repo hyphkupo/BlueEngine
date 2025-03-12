@@ -51,7 +51,7 @@ namespace Blue
 		std::unique_ptr<class QuadMesh> mesh2;
 		
 		// 메시 객체3.
-		std::unique_ptr<class TriangleMesh> mesh3;
+		//std::unique_ptr<class TriangleMesh> mesh3;
 
 		//// 입력 레이아웃.
 		//ID3D11InputLayout* inputlayout = nullptr;

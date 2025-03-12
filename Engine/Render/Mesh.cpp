@@ -164,9 +164,21 @@ namespace Blue
 			//	//shader->Bind();
 			//}
 
-			meshes[ix]->Bind();
-			shaders[ix].lock()->Bind();
-			context.DrawIndexed(meshes[ix]->IndexCount(), 0, 0);	// 드로우 콜
+			// 원래 리소스 가져오기.
+			auto mesh = meshes[ix].lock();
+			auto shader = shaders[ix].lock();
+
+			// 리소스에 문제가 없으면 그리기.
+			if (mesh && shader)
+			{
+				mesh->Bind();
+				shader->Bind();
+				context.DrawIndexed(mesh->IndexCount(), 0, 0);	// 드로우 콜
+			}
+
+			//meshes[ix]->Bind();
+			//shaders[ix].lock()->Bind();
+			//context.DrawIndexed(meshes[ix]->IndexCount(), 0, 0);	// 드로우 콜
 		}
 	}
 }

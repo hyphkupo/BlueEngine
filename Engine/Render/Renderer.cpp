@@ -385,12 +385,12 @@ namespace Blue
 			mesh2->transform.position.x = -0.5f;
 		}
 
-		if (mesh3 == nullptr)
-		{		
-			mesh3 = std::make_unique<TriangleMesh>();
-			mesh3->transform.scale = Vector3::One * 0.5f;
-			mesh3->transform.position.y = 0.5f;
-		}
+		//if (mesh3 == nullptr)
+		//{		
+		//	mesh3 = std::make_unique<TriangleMesh>();
+		//	mesh3->transform.scale = Vector3::One * 0.5f;
+		//	//mesh3->transform.position.y = 0.5f;
+		//}
 
 		// 그리기 전 작업 (BeginScene).
 		context->OMSetRenderTargets(1, &renderTargetView, nullptr);
@@ -407,7 +407,7 @@ namespace Blue
 		// 드로우(Draw) (Draw).		드로우 콜 시 렌더링 파이프라인
 		mesh->Draw();
 		mesh2->Draw();
-		mesh3->Draw();
+		//mesh3->Draw();
 
 		/*
 		// 리소스 바인딩.
