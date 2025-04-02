@@ -36,13 +36,44 @@ void TestClass()
 	std::cout << std::is_base_of<Shader, T>::value << "\n";
 }
 
+/*
+* Todo List.
+* - Input Controller (Window Message Process).
+* - Actor(Entity/GameObject) / Component / Scene(Level). => 레벨 단위로 렌더링 가능
+* - FBX Loader (Assimp/FBX SDK -> Submesh).
+* - Camera ( View / Projection(Perspective/Othographic) ).
+*	- Screen Coordinate System (NDC - Normalized Device Coordinates).
+* - Shade (Shader) ( Light / Brightness / Darkness ).
+*	- 조명 처리는 일반적으로 3단계로 나눈다.
+*	- Ambient(Static/GI, 간접 조명, 기본 조명) / Diffuse(Lambert .../Roughness) / Specular(Highlight, Phong/Blinn-Phong / Metalic).
+*	- Diffuse, Specular를 잘 하기 위해 PBR 사용
+* - Normal Mapping.
+* - Render Target (Draw to texture). => 섀도우 매핑을 위해 필요
+* - Shadow Mapping (Shadow Map).
+* - Environment Mapping (Sky Sphere(Box)).
+* - Study (Tone Mapping).
+* 
+* - Skeletal Mesh (Skinned Mesh) - Skeleton.
+*	- Skeletal Mesh Animation.
+* - Toy Project...
+* 
+* - Study (Physics 충돌처리).
+*/
+
+/*
+* IA(입력 정리) -> VS ...(Option) -> RS/보간기 -> PS -> OM(출력 조립).
+* - VS (정점 변환 Object->World->View->Projection).
+*	- Skeletal Mesh는 VS에서 처리. 가상의 뼈대를 만들어서 사용할 정점 관리
+* - PS (조명 처리) - PBR / 디퓨즈 / 스페큘러.
+* - 엔진 개발자 (렌더러(Renderer) - 개발자).
+*/
+
 int main()
 {
 	// @Test: 텍스처 파일 로드 테스트.
 	//Texture texture("T_coord.png");
 	
 	//TestClass<Engine>();		=> 타입을 잘못 지정하면 없다고 나온다
-
 	//ThrowIfFailed(E_FAIL, TEXT("Test Error"));
 
 	Engine engine(1280, 800, TEXT("Engine Demo"), GetModuleHandle(nullptr));

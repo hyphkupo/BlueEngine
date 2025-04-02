@@ -6,14 +6,14 @@ struct VertexInput
 };
 
 // ConstantBuffer.
-cbuffer Transform : register(b0)
+cbuffer Transform : register(b0)    // b0를 쓰면 0번째 상수로 순서 지정 가능
 {
-    matrix worldMatrix;
+    matrix worldMatrix;     // 4x4 행렬
 };
 
 struct VertexOutput     // 다음 단계 입력으로 쓰려면 출력으로 넘겨줘야 함
 {
-    float4 position : SV_Position;  // SystemValue
+    float4 position : SV_POSITION;  // SystemValue
     float3 color : COLOR;
     float2 texCoord : TEXCOORD;
 };
