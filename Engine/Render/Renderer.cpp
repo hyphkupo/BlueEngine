@@ -8,6 +8,8 @@
 #include "QuadMesh.h"
 #include "Core/Common.h"
 
+#include "Level/Level.h"
+
 namespace Blue
 {
 	Renderer::Renderer(uint32 width, uint32 height, HWND window)
@@ -62,6 +64,7 @@ namespace Blue
 		swapChainDesc.BufferDesc.Width = width;
 		swapChainDesc.BufferDesc.Height = height;
 		swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;		// 8bit 4개이므로 32bit, unsigned(부호없음), normalize(정규화됨 => 0~1까지의 값으로 매핑시키겠다)
+		//swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;		=> FLIP 없으면 화면 주사율 무시
 		swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 
 		// D3D_FEATURE_LEVEL targetLevel;
@@ -369,28 +372,28 @@ namespace Blue
 		renderTargetView->Release();
 	}
 	
-	void Renderer::Draw()
+	void Renderer::Draw(std::shared_ptr<Level> level)
 	{
-		if (mesh == nullptr)
-		{
-			mesh = std::make_unique<QuadMesh>();
-			mesh->transform.scale = Vector3::One * 0.5f;
-			mesh->transform.position.x = 0.5f;
-		}
-
-		if (mesh2 == nullptr)
-		{
-			mesh2 = std::make_unique<QuadMesh>();
-			mesh2->transform.scale = Vector3::One * 0.5f;
-			mesh2->transform.position.x = -0.5f;
-		}
-
-		//if (mesh3 == nullptr)
-		//{		
-		//	mesh3 = std::make_unique<TriangleMesh>();
-		//	mesh3->transform.scale = Vector3::One * 0.5f;
-		//	//mesh3->transform.position.y = 0.5f;
+		//if (mesh == nullptr)
+		//{
+		//	mesh = std::make_unique<QuadMesh>();
+		//	//mesh->transform.scale = Vector3::One * 0.5f;
+		//	//mesh->transform.position.x = 0.5f;
 		//}
+
+		//if (mesh2 == nullptr)
+		//{
+		//	mesh2 = std::make_unique<QuadMesh>();
+		//	//mesh2->transform.scale = Vector3::One * 0.5f;
+		//	//mesh2->transform.position.x = -0.5f;
+		//}
+
+		////if (mesh3 == nullptr)
+		////{		
+		////	mesh3 = std::make_unique<TriangleMesh>();
+		////	mesh3->transform.scale = Vector3::One * 0.5f;
+		////	//mesh3->transform.position.y = 0.5f;
+		////}
 
 		// 그리기 전 작업 (BeginScene).
 		context->OMSetRenderTargets(1, &renderTargetView, nullptr);
@@ -400,13 +403,15 @@ namespace Blue
 		context->ClearRenderTargetView(renderTargetView, color);	// 우리가 이미지로 사용하는 건 enderTargetView.
 		// 메모리를 값(색) 하나로 덮음
 
+		// Draw.
+
 		// @Test.
-		mesh->Update(1.0f / 60.0f);
-		mesh2->Update(1.0f / 60.0f);
+		//mesh->Update(1.0f / 60.0f);
+		//mesh2->Update(1.0f / 60.0f);
 
 		// 드로우(Draw) (Draw).		드로우 콜 시 렌더링 파이프라인
-		mesh->Draw();
-		mesh2->Draw();
+		//mesh->Draw();
+		//mesh2->Draw();
 		//mesh3->Draw();
 
 		/*

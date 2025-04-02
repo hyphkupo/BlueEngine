@@ -84,8 +84,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Actor\Actor.cpp" />
+    <ClCompile Include="Actor\Component.cpp" />
+    <ClCompile Include="Actor\StaticMeshComponent.cpp" />
     <ClCompile Include="Core\Engine.cpp" />
     <ClCompile Include="Core\Window.cpp" />
+    <ClCompile Include="Level\Level.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Math\Matrix4.cpp" />
     <ClCompile Include="Math\Transform.cpp" />
@@ -104,10 +108,14 @@
     <ClCompile Include="Shader\TextureMappingShader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actor\Actor.h" />
+    <ClInclude Include="Actor\Component.h" />
     <ClInclude Include="Core\Common.h" />
     <ClInclude Include="Core\Engine.h" />
     <ClInclude Include="Core\Type.h" />
     <ClInclude Include="Core\Window.h" />
+    <ClInclude Include="Level\Level.h" />
+    <ClInclude Include="Actor\StaticMeshComponent.h" />
     <ClInclude Include="Library\stbi_image.h" />
     <ClInclude Include="Math\Matrix4.h" />
     <ClInclude Include="Math\Transform.h" />
