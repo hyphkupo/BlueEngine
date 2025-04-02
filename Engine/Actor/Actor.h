@@ -12,6 +12,7 @@ namespace Blue
 	class Actor
 	{
 		friend class Renderer;
+		friend class Level;
 
 	public:
 		Actor();
@@ -42,7 +43,7 @@ namespace Blue
 		bool hasInitialized = false;
 		
 		// 액터의 활성화 여부.
-		bool isActive = false;
+		bool isActive = true;
 
 		// 삭제 여부.
 		bool hasDestroyed = false;

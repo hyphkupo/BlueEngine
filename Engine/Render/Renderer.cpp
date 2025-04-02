@@ -9,6 +9,7 @@
 #include "Core/Common.h"
 
 #include "Level/Level.h"
+#include "Actor/Actor.h"
 
 namespace Blue
 {
@@ -404,6 +405,29 @@ namespace Blue
 		// 메모리를 값(색) 하나로 덮음
 
 		// Draw.
+		
+		// 카메라 바인딩.
+		if (level->GetCamera())
+		{
+			level->GetCamera()->Draw();
+		}
+
+		for (uint32 ix = 0; ix < level->ActorCount(); ++ix)
+		{
+			// 액터 가져오기.
+			auto actor = level->GetActor(ix);
+		
+			// Draw.
+			if (actor->IsActive())
+			{
+				//for (const auto& component : actor->components)
+				//{
+				//	// Check if component is drawable(renderable).
+				//}
+
+				actor->Draw();
+			}
+		}
 
 		// @Test.
 		//mesh->Update(1.0f / 60.0f);
@@ -441,7 +465,7 @@ namespace Blue
 
 		*/
 
-		// 버퍼 교환 (EndScene/Present).
+		// 버퍼 교환. (EndScene/Present).
 		swapChain->Present(1u, 0u);		// 1: 쓰겠다 / 0: 안 쓰겠다
 	}
 }

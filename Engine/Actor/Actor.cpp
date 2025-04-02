@@ -1,5 +1,5 @@
 #include "Actor.h"
-#include "Component.h"
+#include "Component/Component.h"
 
 namespace Blue
 {
@@ -36,6 +36,9 @@ namespace Blue
 		{
 			return;			// 업데이트 x
 		}
+
+		// 트랜스폼 업데이트.
+		transform.Tick();
 
 		// 컴포넌트 함수 호출.
 		for (const auto& component : components)
